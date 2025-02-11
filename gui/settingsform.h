@@ -30,7 +30,7 @@ class SettingsForm : public QDialog, private Ui::SettingsForm
     Q_OBJECT
 public:
     explicit SettingsForm(Settings *settings,
-                          QWidget *parent = 0, Qt::WindowFlags flags = 0);
+                          QWidget *parent = 0, Qt::WindowFlags flags = Qt::Widget);
 
 protected:
     void accept();

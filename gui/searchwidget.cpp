@@ -30,7 +30,8 @@
 #include <QSet>
 #include <QStringList>
 #include <QStyle>
-#include <QStyleOptionFrameV2>
+#include <QStyleOptionFrame>
+//#include <QStyleOptionFrameV2>
 #include <QVBoxLayout>
 
 #include <assert.h>
@@ -55,8 +56,8 @@ void UnlabelledLineEdit::paintEvent( QPaintEvent *e )
         p.setFont( f );
         p.setPen( QPen( Qt::gray ) );
 
-        QStyleOptionFrameV2 opt;
-        initStyleOption( &opt );
+        QStyleOptionHeader opt;
+        //fmode initStyleOption( &opt );
 
         QRect r = style()->subElementRect( QStyle::SE_LineEditContents, &opt, this );
 
@@ -96,18 +97,18 @@ SearchWidget::SearchWidget( QWidget *parent )
     m_regexpMatch->hide();
 
     m_buttonLayout = new QHBoxLayout;
-    m_buttonLayout->setMargin( 0 );
+    //fmode m_buttonLayout->setMargin( 0 );
     m_buttonLayout->setSpacing( 0 );
 
     m_modifierLayout = new QVBoxLayout;
-    m_modifierLayout->setMargin( 0 );
+    //fmode m_modifierLayout->setMargin( 0 );
     m_modifierLayout->setSpacing( 2 );
     m_modifierLayout->addWidget( m_strictMatch );
     m_modifierLayout->addWidget( m_wildcardMatch );
     m_modifierLayout->addWidget( m_regexpMatch );
 
     QGridLayout *layout = new QGridLayout( this );
-    layout->setMargin( 0 );
+    //fmode layout->setMargin( 0 );
     layout->addWidget( m_activeTraceKeyComboLabel, 0, 0 );
     layout->addWidget( m_activeTraceKeyCombo, 0, 1 );
     layout->addWidget( m_lineEdit, 0, 2 );
@@ -173,10 +174,17 @@ void SearchWidget::addTraceKeys( const QStringList &keys )
         currentKeys.insert( m_activeTraceKeyCombo->itemText( i ) );
     }
 
-    QSet<QString> newKeys = QSet<QString>::fromList( keys );
-    newKeys.subtract( currentKeys );
+    /*QSet<QString> newKeys = QSet<QString>(keys.begin(), keys.end() );
+    newKeys.subtract( currentKeys );*/
 
-    m_activeTraceKeyCombo->addItems( newKeys.toList() );
+    for(const QString& key : keys)
+    {
+        if (!currentKeys.contains(key))
+        {
+            m_activeTraceKeyCombo->addItem(key);
+        }
+    }
+
 }
 
 void SearchWidget::setFields( const QStringList &fields )

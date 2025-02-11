@@ -50,7 +50,7 @@ class NetworkingThread : public QThread
 {
     Q_OBJECT
 public:
-    NetworkingThread( int socketDescriptor, QObject *parent = 0 );
+    NetworkingThread( qintptr  socketDescriptor, QObject *parent = 0 );
 
 signals:
     void dataReceived( const QByteArray &data );
@@ -59,7 +59,7 @@ protected:
     virtual void run();
 
 private:
-    int m_socketDescriptor;
+    qintptr  m_socketDescriptor;
     ClientSocket *m_clientSocket;
 };
 
@@ -72,7 +72,7 @@ public:
     ~ServerSocket();
 
 protected:
-    virtual void incomingConnection( int socketDescriptor );
+    virtual void incomingConnection( qintptr  socketDescriptor );
 
 private:
     Server *m_server;

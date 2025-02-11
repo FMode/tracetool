@@ -62,7 +62,7 @@ class ConfigEditor : public QDialog, private Ui::ConfigEditor
     Q_OBJECT
 public:
     explicit ConfigEditor(Configuration *conf,
-                          QWidget *parent = 0, Qt::WindowFlags flags = 0);
+                          QWidget *parent = 0, Qt::WindowFlags flags = Qt::Widget);
     ~ConfigEditor();
 
     bool load(const QString &fileName, QString *errMsg);

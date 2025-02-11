@@ -27,7 +27,7 @@ class QComboBox;
 class QHBoxLayout;
 class QPushButton;
 class QRadioButton;
-class QStringList;
+//class QStringList;
 class QVBoxLayout;
 
 class UnlabelledLineEdit : public QLineEdit

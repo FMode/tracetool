@@ -53,10 +53,10 @@ IF(NOT WIN32 AND NOT APPLE)
     endif()
 ENDIF()
 
-FIND_PACKAGE(Qt5 COMPONENTS Gui Core Sql Network Xml Sql REQUIRED)
+FIND_PACKAGE(Qt6 COMPONENTS Gui Core Sql Network Xml Sql Core5Compat REQUIRED)
 ADD_EXECUTABLE(test_session test_session.cpp
                             ../gui/columnsinfo.cpp)
-TARGET_LINK_LIBRARIES(test_session Qt5::Core)
+TARGET_LINK_LIBRARIES(test_session Qt6::Core)
 
 ADD_EXECUTABLE(test_guiconf test_guiconf.cpp
                             ../gui/configuration.cpp)

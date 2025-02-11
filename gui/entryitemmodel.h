@@ -25,6 +25,7 @@
 #include <QAbstractTableModel>
 #include <QSet>
 #include <QSqlDatabase>
+#include <QRegExp>
 
 class QTimer;
 

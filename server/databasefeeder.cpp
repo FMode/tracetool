@@ -548,7 +548,7 @@ void DatabaseFeeder::handleTraceEntry( const TraceEntry &e )
         Transaction transaction( m_db );
         ::storeEntry( m_db, &transaction, e );
     } catch ( const SQLTransactionException &ex ) {
-        if ( ex.driverCode() == SQLITE_FULL ) {
+        if ( ex.driverCode() == "13" ) {
             archiveEntries( m_db, m_shrinkBy, m_archiveDir );
 
             archivedEntries();
@@ -566,8 +566,7 @@ void DatabaseFeeder::handleShutdownEvent( const ProcessShutdownEvent &ev )
     transaction.exec( QString( "UPDATE process SET end_time=%1 WHERE pid=%2 AND start_time=%3;" ).arg( Database::formatValue( m_db, ev.stopTime ) ).arg( ev.pid ).arg( Database::formatValue( m_db, ev.startTime ) ) );
 }
 
-template <typename T>
-T clamp( T v, T lowerBound, T upperBound ) {
+unsigned short clamp( unsigned short v, unsigned short lowerBound, unsigned short upperBound ) {
     if ( v < lowerBound ) return lowerBound;
     if ( v > upperBound ) return upperBound;
     return v;
@@ -575,7 +574,7 @@ T clamp( T v, T lowerBound, T upperBound ) {
 
 void DatabaseFeeder::applyStorageConfiguration( const StorageConfiguration &cfg )
 {
-    const unsigned short shrinkBy = clamp<unsigned short>( cfg.shrinkBy, 1, 100 );
+    const unsigned short shrinkBy = clamp(cfg.shrinkBy, (unsigned short)1, (unsigned short)100 );
     if ( m_maximumSize == cfg.maximumSize &&
          m_shrinkBy == shrinkBy &&
          m_archiveDir == cfg.archiveDir ) {

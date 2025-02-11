@@ -29,9 +29,9 @@ IF (FALSE)
 ENDIF()
 
 # Make sure QtGui is available by finding Qt again
-FIND_PACKAGE(Qt5 COMPONENTS Core Network Xml Sql Gui Widgets REQUIRED)
+FIND_PACKAGE(Qt6 COMPONENTS Core Network Xml Sql Gui Widgets Core5Compat REQUIRED)
 
-QT5_CREATE_TRANSLATION( GUI_QM ${GUI_SOURCES} ${GUI_TS} )
+QT6_CREATE_TRANSLATION( GUI_QM ${GUI_SOURCES} ${GUI_TS} )
 
 # Locate generated ui_*.f files in build directory
 
@@ -41,7 +41,7 @@ SET_TARGET_PROPERTIES(tracegui PROPERTIES
     MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/Info.plist.in"
 )
 
-TARGET_LINK_LIBRARIES(tracegui Qt5::Gui Qt5::Widgets Qt5::Sql Qt5::Network)
+TARGET_LINK_LIBRARIES(tracegui Qt6::Gui Qt6::Widgets Qt6::Sql Qt6::Network Qt6::Core5Compat)
 
 # Installation
 INSTALL(TARGETS tracegui RUNTIME DESTINATION bin COMPONENT applications
@@ -50,7 +50,7 @@ INSTALL(TARGETS tracegui RUNTIME DESTINATION bin COMPONENT applications
                          ARCHIVE DESTINATION lib COMPONENT applications)
 # Make tracegui (and other executables in same directory) self-contained wrt. Qt
 IF(WIN32)
-    GET_TARGET_PROPERTY(_qmake_path Qt5::qmake IMPORTED_LOCATION)
+    GET_TARGET_PROPERTY(_qmake_path Qt6::qmake IMPORTED_LOCATION)
     GET_FILENAME_COMPONENT(_qt_bindir ${_qmake_path} DIRECTORY)
     INSTALL(
         CODE "EXECUTE_PROCESS(COMMAND \"${_qt_bindir}/windeployqt.exe\" \"\${CMAKE_INSTALL_PREFIX}/bin/tracegui.exe\")"
@@ -62,7 +62,7 @@ ELSEIF(APPLE AND BUNDLE_QT)
         CODE "EXECUTE_PROCESS(COMMAND \"${_qt_bindir}/macdeployqt\" \"\${CMAKE_INSTALL_PREFIX}/bin/tracegui.app\")"
         COMPONENT applications)
 ELSEIF(NOT WIN32 AND NOT APPLE AND BUNDLE_QT)
-    FUNCTION(install_qt5_plugin pluginTargetName)
+    FUNCTION(install_qt6_plugin pluginTargetName)
         STRING(TOUPPER ${CMAKE_BUILD_TYPE} _buildType_UC)
         GET_TARGET_PROPERTY(_qtplugin_path ${pluginTargetName} IMPORTED_LOCATION_${_buildType_UC})
         GET_FILENAME_COMPONENT(_qtplugin_name "${_qtplugin_path}" NAME)
@@ -73,24 +73,24 @@ ELSEIF(NOT WIN32 AND NOT APPLE AND BUNDLE_QT)
     ENDFUNCTION()
     FUNCTION(install_library_from_qt_libdir libname)
         STRING(TOUPPER ${CMAKE_BUILD_TYPE} _buildType_UC)
-        GET_TARGET_PROPERTY(_qtlib_dir Qt5::Core IMPORTED_LOCATION_${_buildType_UC})
+        GET_TARGET_PROPERTY(_qtlib_dir Qt6::Core IMPORTED_LOCATION_${_buildType_UC})
         GET_FILENAME_COMPONENT(_qtlib_dir ${_qtlib_dir} PATH)
         FILE(GLOB _libfiles "${_qtlib_dir}/${libname}*")
         message(STATUS "${_libfiles}")
         INSTALL(FILES ${_libfiles} DESTINATION lib COMPONENT applications)
     ENDFUNCTION()
-    INSTALL_LIBRARY_FROM_QT_LIBDIR("libQt5Core.so.5")
-    INSTALL_LIBRARY_FROM_QT_LIBDIR("libQt5DBus.so.5")
-    INSTALL_LIBRARY_FROM_QT_LIBDIR("libQt5Gui.so.5")
-    INSTALL_LIBRARY_FROM_QT_LIBDIR("libQt5Network.so.5")
-    INSTALL_LIBRARY_FROM_QT_LIBDIR("libQt5Sql.so.5")
-    INSTALL_LIBRARY_FROM_QT_LIBDIR("libQt5Widgets.so.5")
-    INSTALL_LIBRARY_FROM_QT_LIBDIR("libQt5XcbQpa.so.5")
+    INSTALL_LIBRARY_FROM_QT_LIBDIR("libQt6Core.so.5")
+    INSTALL_LIBRARY_FROM_QT_LIBDIR("libQt6DBus.so.5")
+    INSTALL_LIBRARY_FROM_QT_LIBDIR("libQt6Gui.so.5")
+    INSTALL_LIBRARY_FROM_QT_LIBDIR("libQt6Network.so.5")
+    INSTALL_LIBRARY_FROM_QT_LIBDIR("libQt6Sql.so.5")
+    INSTALL_LIBRARY_FROM_QT_LIBDIR("libQt6Widgets.so.5")
+    INSTALL_LIBRARY_FROM_QT_LIBDIR("libQt6XcbQpa.so.5")
     INSTALL_LIBRARY_FROM_QT_LIBDIR("libicudata.so.56")
     INSTALL_LIBRARY_FROM_QT_LIBDIR("libicuuc.so.56")
     INSTALL_LIBRARY_FROM_QT_LIBDIR("libicui18n.so.56")
-    INSTALL_QT5_PLUGIN(Qt5::QXcbIntegrationPlugin)
-    INSTALL_QT5_PLUGIN(Qt5::QSQLiteDriverPlugin)
+    INSTALL_QT6_PLUGIN(Qt6::QXcbIntegrationPlugin)
+    INSTALL_QT6_PLUGIN(Qt6::QSQLiteDriverPlugin)
     INSTALL(
         CODE "FILE(WRITE \"\${CMAKE_INSTALL_PREFIX}/bin/qt.conf\" \"[Paths]\nPrefix=..\")"
         COMPONENT applications )

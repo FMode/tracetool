@@ -563,7 +563,7 @@ bool MainWindow::startAutomaticServer()
     }
     m_automaticServerProcess = new QProcess(this);
     m_automaticServerProcess->
-        setReadChannelMode(QProcess::MergedChannels);
+        setProcessChannelMode(QProcess::MergedChannels);
     m_automaticServerProcess->
         setReadChannel(QProcess::StandardOutput);
     connect(m_automaticServerProcess,

@@ -47,7 +47,7 @@ void ClientSocket::handleIncomingData()
     emit dataReceived( data );
 }
 
-NetworkingThread::NetworkingThread( int socketDescriptor, QObject *parent )
+NetworkingThread::NetworkingThread( qintptr  socketDescriptor, QObject *parent )
     : QThread( parent ),
     m_socketDescriptor( socketDescriptor ),
     m_clientSocket( 0 )
@@ -86,7 +86,7 @@ ServerSocket::~ServerSocket()
     }
 }
 
-void ServerSocket::incomingConnection( int socketDescriptor )
+void ServerSocket::incomingConnection( qintptr  socketDescriptor )
 {
     NetworkingThread *thread = new NetworkingThread( socketDescriptor,
                                                      this );
@@ -173,11 +173,12 @@ Server::Server( const QString &traceFile,
     m_traceFile = QDir::toNativeSeparators( fi.canonicalFilePath() );
 
     m_tcpServer = new ServerSocket( this );
-    m_tcpServer->listen( QHostAddress::Any, port );
-
+    //connect( m_tcpServer, SIGNAL( newConnection() ), SLOT( m_tcpServer.incomingConnection() ) );
+    int a = m_tcpServer->listen( QHostAddress::LocalHost, port );
+    
     m_guiServer = new QTcpServer( this );
     connect( m_guiServer, SIGNAL( newConnection() ), SLOT( handleNewGUIConnection() ) );
-    m_guiServer->listen( QHostAddress::LocalHost, guiPort );
+    a = m_guiServer->listen( QHostAddress::LocalHost, guiPort );
 
     m_xmlHandler.addData( "<toplevel_trace_element>" );
 }

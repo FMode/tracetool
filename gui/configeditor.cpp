@@ -363,8 +363,8 @@ void ConfigEditor::currentProcessChanged(QListWidgetItem *current, QListWidgetIt
         hostEdit->setText(p->m_outputOption["host"]);
         portEdit->setText(p->m_outputOption["port"]);
     } else {
-        hostEdit->setText(QString::null);
-        portEdit->setText(QString::null);
+        hostEdit->setText(QString());
+        portEdit->setText(QString());
     }
 
     // Serializer

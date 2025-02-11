@@ -6,3 +6,15 @@ cibuild_*/
 pkgbuild_*/
 .vscode
 .*.swp
+CMakeFiles/
+*_autogen
+Makefile
+CMakeLists*
+*.cmake
+*.a
+*.qm
+CMakeCache.*
+config.h
+3rdparty/pcre-8.10/pcregrep
+*.so
+*.ts

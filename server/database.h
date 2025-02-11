@@ -107,7 +107,7 @@ struct TracedApplicationInfo
 class SQLTransactionException : public std::runtime_error
 {
 public:
-    SQLTransactionException( const QString &what, const QString &msg, int code )
+    SQLTransactionException( const QString &what, const QString &msg, const QString &code )
         : std::runtime_error( what.toUtf8().constData() ),
         m_msg( msg ),
         m_code( code )
@@ -116,11 +116,11 @@ public:
     ~SQLTransactionException() throw() { }
 
     const QString &driverMessage() const { return m_msg; }
-    int driverCode() const { return m_code; }
+    const QString &driverCode() const { return m_code; }
 
 private:
     QString m_msg;
-    int m_code;
+    QString m_code;
 };
 
 class Transaction

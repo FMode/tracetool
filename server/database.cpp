@@ -57,7 +57,7 @@ QVariant Transaction::exec( const QString &statement )
         throw SQLTransactionException( QString( "Failed to store entry in database: executing SQL command '%1' failed: %2" )
                                         .arg( statement ).arg( m_query.lastError().text() ),
                                        m_query.lastError().text(),
-                                       m_query.lastError().number() );
+                                       m_query.lastError().nativeErrorCode() );
     }
     if ( m_query.next() ) {
         return m_query.value( 0 );
@@ -72,7 +72,7 @@ QVariant Transaction::insert( const QString &statement )
         throw SQLTransactionException( QString( "Failed to store entry in database: executing SQL command '%1' failed: %2" )
                                         .arg( statement ).arg( m_query.lastError().text() ),
                                        m_query.lastError().text(),
-                                       m_query.lastError().number() );
+                                       m_query.lastError().nativeErrorCode() );
     }
 
     assert( m_query.driver()->hasFeature( QSqlDriver::LastInsertId ) );

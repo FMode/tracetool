@@ -18,6 +18,8 @@
  */
 
 #include "xmlcontenthandler.h"
+#include <QStringRef>
+
 
 XmlContentHandler::XmlContentHandler( XmlParseEventsHandler *handler )
     : m_handler( handler ),
@@ -77,7 +79,7 @@ void XmlContentHandler::handleStartElement()
     } else if ( m_xmlReader.name() == QLatin1String( "variable" ) ) {
         m_currentVariable = Variable();
         m_currentVariable.name = atts.value( QLatin1String( "name" ) ).toString();
-        const QStringRef typeStr = atts.value( QLatin1String( "type" ) );
+        const QStringView typeStr = atts.value( QLatin1String( "type" ) );
         if ( typeStr == QLatin1String( "string" ) ) {
             m_currentVariable.type = TRACELIB_NAMESPACE_IDENT(VariableType)::String;
         } else if ( typeStr == QLatin1String( "number" ) ) {
